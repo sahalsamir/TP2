@@ -1,0 +1,7 @@
+{
+  "scenario": "Prêt pour le super vélo",
+  "datePret": "2016-09-01",
+  "montantInitial": "10000.00",
+  "nombrePeriodes": "36",
+  "tauxPeriodique": "0.02"
+}
