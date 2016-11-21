@@ -19,3 +19,8 @@ println serverProxy8081.echo("Bonjour 8081 ")
 println serverProxy8082.echo("Bonjour 8082 ")
 
 println serverProxy8080.microservice1(args[0])
+
+def resutMicroService1 = serverProxy8080.microservice1(args[0])
+
+println serverProxy8081.microservice2(resutMicroService1)
+
