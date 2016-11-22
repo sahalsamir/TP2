@@ -1,6 +1,5 @@
 import groovy.json.JsonSlurper
 import groovy.json.JsonOutput
-import groovy.json.JsonBuilder
 
 import java.math.RoundingMode
 
@@ -14,29 +13,17 @@ server8080.echo = { it }
 def serverSocket8080 = new ServerSocket( 8080 )
 
 server8080.startServer( serverSocket8080 )
-println "demarrage 8080"            
+println "demarrage 8080"                       
              
-server8080.microservice1 = { nomFichierIntrant ->  fileResultat1
-                       //Lecture du fichier json
-                       def jsonSlurper = new JsonSlurper()
-                       def parametre = jsonSlurper.parse new File(nomFichierIntrant) 
-                       
-                       //calculer versement
-                       def scenario = parametre.scenario
-                       def datePret = parametre.datePret
-                       def montant = parametre.montantInitial as Double
-                       def nombrePeriodes = parametre.nombrePeriodes as int
-                       def taux = parametre.tauxPeriodique as Double
-                       def versement = montant * taux / (1 - (1 + taux) ** (- nombrePeriodes))
-                       versement = versement.round(2) as String     
-                       
-                       //Creer fichier de sortie de microservice 1
-                       def json = new JsonBuilder()
-                       def fileResultat1 = json "scenario": scenario,
-                                       "datePret": datePret,
-                                       "montantInitial": montant,
-                                       "nombrePeriodes": nombrePeriodes,
-                                       "tauxPeriodique": taux,
-                                       "versement": versement
-                       return fileResultat1.toString()                 
-             }        
+server8080.lireParametres = {nomFichierIntrant -> nomFichierIntrant
+    def jsonSlurper = new JsonSlurper()
+    jsonSlurper.parse new File(nomFichierIntrant)
+}
+
+server8080.calculerVersement = {calcule -> calcule
+    def montant = calcule.montantInitial as Double
+    def taux = calcule.tauxPeriodique as Double
+    def nombrePeriodes = calcule.nombrePeriodes as int
+    def versement = montant * taux / (1 - (1 + taux) ** (- nombrePeriodes))
+    versement.round(2) as String
+}

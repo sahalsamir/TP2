@@ -18,9 +18,15 @@ println serverProxy8080.echo("Bonjour 8080 ")
 println serverProxy8081.echo("Bonjour 8081 ")
 println serverProxy8082.echo("Bonjour 8082 ")
 
-println serverProxy8080.microservice1(args[0])
 
-def resutMicroService1 = serverProxy8080.microservice1(args[0])
+def parametres = serverProxy8080.lireParametres(args[0])
+parametres.versement = serverProxy8080.calculerVersement parametres
+def pret = [
+            parametres: parametres,
+            calendrier: serverProxy8081.genererCalendrier(parametres),
+    ]
+//serverProxy8082.genererPdf pret, "${args[0]}.pdf"
 
-println serverProxy8081.microservice2(resutMicroService1)
-
+println parametres.versement
+println "-----------------------------------------"
+println pret
