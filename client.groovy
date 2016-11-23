@@ -10,23 +10,18 @@ def url8080 = "http://localhost:8080"
 def url8081 = "http://localhost:8081"
 def url8082 = "http://localhost:8082"
 
-def serverProxy8080 = new XMLRPCServerProxy(url8080)
-def serverProxy8081 = new XMLRPCServerProxy(url8081)
-def serverProxy8082 = new XMLRPCServerProxy(url8082)
-
-println serverProxy8080.echo("Bonjour 8080 ")
-println serverProxy8081.echo("Bonjour 8081 ")
-println serverProxy8082.echo("Bonjour 8082 ")
+def calcul_versement_proxy = new XMLRPCServerProxy(url8080)
+def calendrier_paiements_proxy = new XMLRPCServerProxy(url8081)
+def generateur_markdown_proxy = new XMLRPCServerProxy(url8082)
 
 
-def parametres = serverProxy8080.lireParametres(args[0])
-parametres.versement = serverProxy8080.calculerVersement parametres
-def pret = [
-            parametres: parametres,
-            calendrier: serverProxy8081.genererCalendrier(parametres),
-    ]
-//serverProxy8082.genererPdf pret, "${args[0]}.pdf"
+def json = calcul_versement_proxy.calculer_versement args[0]
 
-println parametres.versement
-println "-----------------------------------------"
-println pret
+def calendrier = calendrier_paiements_proxy.calandrier_paiements json
+
+def markdown = generateur_markdown_proxy.generer_markdown calendrier
+
+println markdown
+//println JsonOutput.prettyPrint(calendrier)
+
+
