@@ -7,6 +7,7 @@ import java.math.RoundingMode
 
 @Grab('org.codehaus.groovy:groovy-xmlrpc:0.8')
 import groovy.net.xmlrpc.*
+import java.text.DecimalFormat
 
 def generateur_markdown_server = new XMLRPCServer()
 
@@ -72,12 +73,14 @@ def markdownLignes(calendrier) {
 }
 
 def formatDate(date) {
-    date.format 'yyyy-MM-dd'
+    Date date1 = Date.parse("yyyy-MM-dd", date)
+    date1.format 'yyyy-MM-dd'
 }
 
 def formatDollar(montant) {
-    def formateur = java.text.NumberFormat.currencyInstance
-    formateur.format(montant as BigDecimal)
+//    def formateur = java.text.NumberFormat.currencyInstance
+//    formateur.format(montant as BigDecimal)
+    DecimalFormat.getCurrencyInstance(Locale.CANADA_FRENCH).format(montant as BigDecimal)
 }
 
 def formatPourcent(pourcent) {
