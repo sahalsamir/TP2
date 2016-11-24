@@ -13,7 +13,7 @@ def calendrier_paiements_server = new XMLRPCServer()
 def calendrier_paiements_socket = new ServerSocket(8081)
 
 calendrier_paiements_server.startServer(calendrier_paiements_socket)
-println "demarrage 8081"
+println "demarrage du serveice calendrier paiements sur le port 8081"
 
 calendrier_paiements_server.calandrier_paiements = { json -> json
     JsonSlurper slurper = new JsonSlurper()

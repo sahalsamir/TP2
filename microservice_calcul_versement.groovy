@@ -4,15 +4,15 @@ import groovy.json.JsonOutput
 @Grab('org.codehaus.groovy:groovy-xmlrpc:0.8')
 import groovy.net.xmlrpc.*
 
-def microservice_calcul_versement = new XMLRPCServer()
+def calcul_versement_server = new XMLRPCServer()
 
-def microservice_calcul_versement_socket = new ServerSocket( 8080 )
+def calcul_versement_socket = new ServerSocket( 8080 )
 
-microservice_calcul_versement.startServer( microservice_calcul_versement_socket )
-println "demarrage du serveices 1 sur le port 8080"
-             
+calcul_versement_server.startServer( calcul_versement_socket )
+println "demarrage du serveice calcul versement sur le port 8080"
 
-microservice_calcul_versement.calculer_versement = {json_intrant -> json_intrant
+
+calcul_versement_server.calculer_versement = {json_intrant -> json_intrant
     def jsonSlurper = new JsonSlurper()
     def jsonMap = jsonSlurper.parseText new File(json_intrant).text
 

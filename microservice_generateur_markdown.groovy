@@ -16,8 +16,8 @@ generateur_markdown_server.echo = { it }
 def generateur_markdown_socket = new ServerSocket( 8082 )
 
 generateur_markdown_server.startServer( generateur_markdown_socket )
-println "demarrage 8082"             
-             
+println "demarrage du serveice generateur markdown sur le port 8082"
+
 
 generateur_markdown_server.generer_markdown = {json_calendrier -> json_calendrier
     JsonSlurper slurper = new JsonSlurper()
@@ -73,13 +73,10 @@ def markdownLignes(calendrier) {
 }
 
 def formatDate(date) {
-    Date date1 = Date.parse("yyyy-MM-dd", date)
-    date1.format 'yyyy-MM-dd'
+    Date.parse("yyyy-MM-dd", date).format 'yyyy-MM-dd'
 }
 
 def formatDollar(montant) {
-//    def formateur = java.text.NumberFormat.currencyInstance
-//    formateur.format(montant as BigDecimal)
     DecimalFormat.getCurrencyInstance(Locale.CANADA_FRENCH).format(montant as BigDecimal)
 }
 
@@ -87,3 +84,4 @@ def formatPourcent(pourcent) {
     def formateur = new java.text.DecimalFormat('###.##\u00A0%')
     formateur.format(pourcent as BigDecimal)
 }
+

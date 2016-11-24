@@ -6,6 +6,11 @@ import groovy.json.JsonOutput
 
 import java.math.RoundingMode
 
+"groovy  microservice_calcul_versement.groovy &".execute()
+"groovy  microservice_calendrier_paiements.groovy &".execute()
+"groovy  microservice_generateur_markdown.groovy &".execute()
+
+
 def url8080 = "http://localhost:8080"
 def url8081 = "http://localhost:8081"
 def url8082 = "http://localhost:8082"
@@ -20,8 +25,9 @@ def json = calcul_versement_proxy.calculer_versement args[0]
 def calendrier = calendrier_paiements_proxy.calandrier_paiements json
 
 def markdown = generateur_markdown_proxy.generer_markdown calendrier
-
 println markdown
-//println JsonOutput.prettyPrint(calendrier)
 
+"fuser -k 8080/tcp &".execute()
+"fuser -k 8081/tcp &".execute()
+"fuser -k 8082/tcp &".execute()
 
