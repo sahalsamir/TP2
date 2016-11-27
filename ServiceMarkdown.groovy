@@ -1,27 +1,18 @@
-import groovy.json.JsonSlurper
-import groovy.json.JsonOutput
-import groovy.json.JsonBuilder
-
-
-import java.math.RoundingMode
-
 @Grab('org.codehaus.groovy:groovy-xmlrpc:0.8')
+
+import groovy.json.JsonSlurper
 import groovy.net.xmlrpc.*
 import java.text.DecimalFormat
 
-def generateur_markdown_server = new XMLRPCServer()
 
-generateur_markdown_server.echo = { it }
-
-def generateur_markdown_socket = new ServerSocket( 8082 )
-
-generateur_markdown_server.startServer( generateur_markdown_socket )
-println "demarrage du serveice generateur markdown sur le port 8082"
+def markdownServer = new XMLRPCServer()
+def markdownSocket = new ServerSocket( 8082 )
+markdownServer.startServer( markdownSocket )
 
 
-generateur_markdown_server.generer_markdown = {json_calendrier -> json_calendrier
+markdownServer.genererMarkdown = {json -> json
     JsonSlurper slurper = new JsonSlurper()
-    def calendrier = slurper.parseText(json_calendrier)
+    def calendrier = slurper.parseText(json)
     """\
     % Calcul du remboursement d'un prêt
     % Louis Martin -- INF5153 -- UQAM

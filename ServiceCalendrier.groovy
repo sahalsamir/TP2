@@ -1,21 +1,15 @@
-import groovy.json.JsonBuilder
+@Grab('org.codehaus.groovy:groovy-xmlrpc:0.8')
 import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
-
 import java.math.RoundingMode
-
-@Grab('org.codehaus.groovy:groovy-xmlrpc:0.8')
 import groovy.net.xmlrpc.*
 
-def calendrier_paiements_server = new XMLRPCServer()
 
+def calendrierServer = new XMLRPCServer()
+def calendrierSocket = new ServerSocket(8081)
+calendrierServer.startServer(calendrierSocket)
 
-def calendrier_paiements_socket = new ServerSocket(8081)
-
-calendrier_paiements_server.startServer(calendrier_paiements_socket)
-println "demarrage du serveice calendrier paiements sur le port 8081"
-
-calendrier_paiements_server.calandrier_paiements = { json -> json
+calendrierServer.calandrierPaiements = { json -> json
     JsonSlurper slurper = new JsonSlurper()
     def jsonMap = slurper.parseText(json)
 

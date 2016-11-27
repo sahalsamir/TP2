@@ -4,24 +4,21 @@ import groovy.json.JsonOutput
 @Grab('org.codehaus.groovy:groovy-xmlrpc:0.8')
 import groovy.net.xmlrpc.*
 
-def calcul_versement_server = new XMLRPCServer()
-
-def calcul_versement_socket = new ServerSocket( 8080 )
-
-calcul_versement_server.startServer( calcul_versement_socket )
-println "demarrage du serveice calcul versement sur le port 8080"
+def versementServer = new XMLRPCServer()
+def versementSocket = new ServerSocket( 8080 )
+versementServer.startServer( versementSocket )
 
 
-calcul_versement_server.calculer_versement = {json_intrant -> json_intrant
+versementServer.calculerVersement = {json -> json
     def jsonSlurper = new JsonSlurper()
-    def jsonMap = jsonSlurper.parseText new File(json_intrant).text
+    def jsonMap = jsonSlurper.parseText new File(json).text
 
     def montant = jsonMap.montantInitial as Double
     def taux = jsonMap.tauxPeriodique as Double
     def nombrePeriodes = jsonMap.nombrePeriodes as int
     def versement = (montant * taux / (1 - (1 + taux) ** (- nombrePeriodes))).round(2)
 
-    def json_extrant = [
+    def jsonExtrant = [
             "scenario": jsonMap.scenario,
             "datePret": jsonMap.datePret,
             "montantInitial": jsonMap.montantInitial,
@@ -29,6 +26,6 @@ calcul_versement_server.calculer_versement = {json_intrant -> json_intrant
             "tauxPeriodique": jsonMap.tauxPeriodique,
             "versement": versement as String
     ]
-    JsonOutput.toJson(json_extrant)
+    JsonOutput.toJson(jsonExtrant)
 
 }
